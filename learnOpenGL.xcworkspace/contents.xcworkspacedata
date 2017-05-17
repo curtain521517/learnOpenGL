@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:shader01/shader01.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:shaders0/shaders0.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:helloTriangle01/helloTriangle01.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:helloTriangle/helloTriangle.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:firstWindowTest/firstWindowTest.xcodeproj">
+   </FileRef>
+</Workspace>
