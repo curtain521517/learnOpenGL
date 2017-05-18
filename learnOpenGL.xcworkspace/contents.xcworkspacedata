@@ -2,6 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CameraTest/CameraTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:CoordinateSys/CoordinateSys.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Transformations/Transformations.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Textures/Textures.xcodeproj">
    </FileRef>
    <FileRef

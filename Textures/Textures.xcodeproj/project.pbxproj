@@ -260,7 +260,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.0.0/lib,
 					/usr/local/Cellar/glfw/3.2.1/lib,
-					/usr/local/lib/SOIL,
+					/usr/local/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -279,7 +279,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.0.0/lib,
 					/usr/local/Cellar/glfw/3.2.1/lib,
-					/usr/local/lib/SOIL,
+					/usr/local/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
