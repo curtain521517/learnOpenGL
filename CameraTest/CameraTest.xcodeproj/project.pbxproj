@@ -12,6 +12,7 @@
 		51A55F341ECDE7110033DB33 /* libGLEW.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A55F311ECDE7110033DB33 /* libGLEW.2.0.0.dylib */; };
 		51A55F351ECDE7110033DB33 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A55F321ECDE7110033DB33 /* libglfw.3.2.dylib */; };
 		51A55F361ECDE7110033DB33 /* libSOIL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A55F331ECDE7110033DB33 /* libSOIL.a */; };
+		51A55F3E1ECEA1540033DB33 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51A55F3C1ECEA1540033DB33 /* Camera.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,8 @@
 		51A55F381ECDE77B0033DB33 /* shader01.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader01.vs; sourceTree = "<group>"; };
 		51A55F391ECDE77B0033DB33 /* box.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = box.jpg; sourceTree = "<group>"; };
 		51A55F3A1ECDE77B0033DB33 /* awesomeface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = awesomeface.png; sourceTree = "<group>"; };
+		51A55F3C1ECEA1540033DB33 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		51A55F3D1ECEA1540033DB33 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +60,8 @@
 		51A55F1B1ECDE63B0033DB33 = {
 			isa = PBXGroup;
 			children = (
+				51A55F3C1ECEA1540033DB33 /* Camera.cpp */,
+				51A55F3D1ECEA1540033DB33 /* Camera.hpp */,
 				51A55F371ECDE77B0033DB33 /* shader01.frag */,
 				51A55F381ECDE77B0033DB33 /* shader01.vs */,
 				51A55F391ECDE77B0033DB33 /* box.jpg */,
@@ -151,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51A55F3E1ECEA1540033DB33 /* Camera.cpp in Sources */,
 				51A55F281ECDE63B0033DB33 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +308,7 @@
 				51A55F2D1ECDE63B0033DB33 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

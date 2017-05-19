@@ -14,6 +14,7 @@
 #include <GLFW/glfw3.h>
 
 #include <shaderClass/Shader.hpp>
+#include "Camera.hpp"
 
 #include <SOIL/SOIL.h>
 #include <glm/glm.hpp>
@@ -24,6 +25,7 @@
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 
 void do_movement();
 void display();
@@ -39,6 +41,8 @@ GLfloat lastX = 400, lastY = 300;
 GLfloat yaw= -90.0f, pitch;
 GLfloat fov = 45.0f;//视野
 bool firstMouse = true;
+
+Camera camera(glm::vec3(0.0f,0.0f,3.0f));
 
 
 
@@ -125,7 +129,6 @@ int main()
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
-    
 
     
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -243,23 +246,21 @@ int main()
         glm::mat4 view;
         //view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
         
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
+        //view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        view = camera.GetViewMatrix();
+        
         
         
         glm::mat4 projection;
-        projection = glm::perspective(fov, screenWidth / screenHeight * 1.0f, 0.1f, 100.0f);
+        projection = glm::perspective(camera.Zoom, screenWidth / screenHeight * 1.0f, 0.1f, 1000.0f);
         
         // 将矩阵传入着色器
         GLint modelLoc = glGetUniformLocation(myShader.Program, "model");
-        //model = glm::rotate(model, (GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.5f, 1.0f, 0.0f));
-        
-        //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        
         GLint viewLoc = glGetUniformLocation(myShader.Program, "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        
         GLint projectionLoc = glGetUniformLocation(myShader.Program, "projection");
+
+        
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         
         //绑定VAO
@@ -274,11 +275,10 @@ int main()
             
             GLfloat angle = 20.0f * i;
             int key = (i%3==0 || i==0) ? 1 : 0;
-            key = 0;
+            //key = 0;
             model = glm::rotate(model, angle+ key * (GLfloat)glfwGetTime() * 50, glm::vec3(1.0f, 0.3f, 0.5f));
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
             glDrawArrays(GL_TRIANGLES, 0, 36);
-            
             
         }
         
@@ -295,14 +295,6 @@ int main()
     glfwTerminate();
     
     return 0;
-}
-
-void display()
-{
-    //缓冲颜色
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    //清空颜色缓冲
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -362,6 +354,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     if(firstMouse) // 这个bool变量初始时是设定为true的
@@ -376,35 +369,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
     
-    GLfloat sensitivity = 0.02f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-    
-    yaw   += xoffset;
-    pitch += yoffset;
-    
-    if(pitch > 89.0f)
-        pitch =  89.0f;
-    if(pitch < -89.0f)
-        pitch = -89.0f;
-    
-    glm::vec3 front;
-    front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-    front.y = sin(glm::radians(pitch));
-    front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-    
-    std::cout<<front.x<<" : "<<front.y<<" : "<<front.z<<std::endl;
-    cameraFront = glm::normalize(front);
+    camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    if(fov >= 1.0f && fov <= 45.0f)
-        fov -= yoffset;
-    if(fov <= 1.0f)
-        fov = 1.0f;
-    if(fov >= 45.0f)
-        fov = 45.0f;
+    camera.ProcessMouseScroll(yoffset);
 }
 
 void do_movement()
@@ -412,17 +382,18 @@ void do_movement()
     GLfloat cameraSpeed = 5.0f * deltaTime;
     
     if(keys[GLFW_KEY_W]) {
-        cameraPos += cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(FORWARD, deltaTime);
         
     }
     else if(keys[GLFW_KEY_S]) {
-        cameraPos -=cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+
     }
     else if(keys[GLFW_KEY_A]) {
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(LEFT, deltaTime);
+
     }
     else if(keys[GLFW_KEY_D]) {
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(RIGHT, deltaTime);
     }
-    
 }
