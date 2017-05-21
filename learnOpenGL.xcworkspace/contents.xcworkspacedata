@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:LightingMaps/LightingMaps.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Colors/Colors.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:CameraTest/CameraTest.xcodeproj">
    </FileRef>
    <FileRef
